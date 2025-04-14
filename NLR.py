@@ -27,7 +27,16 @@ def calc_jacobian(X,p):
 
     ### Your job starts here ###
 
-    raise NotImplementedError() #DELETE AND ADD YOUR CODE
+    a = p[0, 0]
+    b = p[1, 0]
+
+    x_pow_b = X ** b
+    log_x = np.log(X)
+
+    J[:, 0] = x_pow_b.reshape(-1)                # ∂f/∂a = x^b
+    J[:, 1] = (a * x_pow_b * log_x).reshape(-1)  # ∂f/∂b = a * x^b * log(x)
+    J[:, 2] = X.reshape(-1)                      # ∂f/∂c = x
+    J[:, 3] = 1.0                                # ∂f/∂d = 1s
 
     ### Your job ends here ###
 
@@ -58,7 +67,13 @@ def nonlinear_regression_gn(X, Y, initialP):
     ### Your job starts here ###
 
     for iteration in range(GAUSS_NEWTON_ITERATIONS): #PLEASE do not change this line
-      raise NotImplementedError() #DELETE AND ADD YOUR CODE
+      Y_pred = model_function(X, p)
+      residual = Y_pred - Y
+      J = calc_jacobian(X, p)
+
+      JTJ_inv = np.linalg.inv(J.T @ J)
+      update = JTJ_inv @ J.T @ residual
+      p -= update
 
     ### Your job ends here ###
     return p
@@ -89,8 +104,12 @@ def nonlinear_regression_gd(X, Y, initialP):
 
 
     for iteration in range(GRADIENT_DESCENT_ITERATIONS): #PLEASE do not change this line
-      raise NotImplementedError() #DELETE AND ADD YOUR CODE
-    # PLEASE use LEARNING_RATE variable defined above
+      Y_pred = model_function(X, p)
+      residual = Y_pred - Y
+      J = calc_jacobian(X, p)
+
+      gradient = J.T @ residual
+      p -= LEARNING_RATE * gradient
 
 
     ### Your job ends here ###
