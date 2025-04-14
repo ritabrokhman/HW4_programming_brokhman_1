@@ -25,7 +25,7 @@ def linear_regression(X, Y):
 
     ### Your job starts here ###
 
-    p= #Solve for the parameters, refer to slide 19
+    p = np.linalg.inv(X.T @ X) @ X.T @ Y
 
     ### Your job ends here ###
     return p
@@ -46,7 +46,7 @@ def polynomial_regression(X, Y, degree):
 
     ### Your job starts here ###
 
-    A= #Constuct the proper A matrix for a polynomial, refer to slide 22
+    A= np.hstack([X**i for i in range(degree+1)])
 
     ### Your job ends here ###
     
